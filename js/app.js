@@ -1,38 +1,109 @@
-// function mapMunicipalityData(dates, cumConfirmed, cumTested) {
-//   var mappedDates = [];
-//   var mappedConfirmed = [];
-//   var mappedTested = [];
-//   var mappedConfirmedPercent = [];
-
-//   var lastDate = moment(dates[0], 'YYYY-MM-DD');
-//   for (var i = 1; i < dates.length; ++i) {
-//     const date = moment(dates[i], 'YYYY-MM-DD');
-//     const dayDiff = date.diff(lastDate, 'days')
-//     const newConfirmed = (cumConfirmed[i] - cumConfirmed[i-1])/dayDiff;
-//     const newTested = (cumTested[i] - cumTested[i-1])/dayDiff;
-//     const newConfirmedPercent = 100 * (newConfirmed/newTested);
-
-//     mappedDates.push(dates[i]);
-//     mappedConfirmed.push(newConfirmed);
-//     mappedTested.push(newTested);
-//     mappedConfirmedPercent.push(newConfirmedPercent);
-
-//     lastDate = date;
-//   }
-
-//   return [mappedDates, mappedConfirmed, mappedTested, mappedConfirmedPercent];
-// }
-
-$.get("json/municipalities.json", function(data) {
-  // const [dates, newConfirmed, newTested, newConfirmedPercent] = mapMunicipalityData(configData['dates'], municipalityData['cases'], municipalityData['tested']);
-  cases = data['municipalities']['Aarhus']['cases']
+$.get("json/time_series.json", function(data) {
+  cases = data['cases']
+  tested_persons = data['testedPersons']
+  deaths = data['deaths']
   dates = data['dates']
 
-  var trace = {
-    x: dates.slice(0, dates.length - 1),
-    y: cases.slice(0, cases.length - 1),
+  percent_positive = []
+  for (var i = 0; i < cases.length; ++i) {
+    if (tested_persons[i] == 0) {
+      percent_positive.push(0);
+      continue;
+    }
+
+    percent_positive.push(100 * (cases[i]/tested_persons[i]));
+  }
+
+  var trace1 = {
+    x: dates.slice(0, dates.length - 2),
+    y: tested_persons.slice(0, dates.length - 2),
     type: 'scatter',
     mode: 'lines+markers',
+    name: 'Tested Persons',
+  };
+
+  var trace2 = {
+    x: dates.slice(0, dates.length - 2),
+    y: percent_positive.slice(0, dates.length - 2),
+    type: 'scatter',
+    mode: 'lines+markers',
+    name: 'Positive Tests (%)',
+    yaxis: 'y2',
+  };
+
+  var data = [trace1, trace2];
+
+  var selectorOptions = {
+    buttons: [
+      {
+        // step: 'week',
+        // count: 1,
+        // label: '1w',
+        // stepmode: 'backward',
+      // }, {
+        step: 'month',
+        count: 1,
+        label: '1m',
+        stepmode: 'backward',
+      }, {
+        step: 'month',
+        count: 2,
+        label: '2m',
+        stepmode: 'backward',
+      }, {
+        step: 'all',
+      }],
+  };
+
+  var layout = {
+    xaxis: {
+      rangeslider: {range: ['2020-07-19', '2020-08-19']},
+      rangeselector: selectorOptions,
+      type: "date",
+    },
+    yaxis: {
+      title: "count",
+    },
+    yaxis2: {
+      title: "percent",
+      overlaying: 'y',
+      side: 'right',
+      range: [0, 1],
+    },
+  };
+
+  $('#scatter-plot .spinner').hide();
+  Plotly.newPlot('scatter-plot', data, layout, {staticPlot: false});
+});
+
+function mapBounds(estimate, lower, upper) {
+  var mappedLower = []
+  var mappedUpper = []
+
+  for (var i = 0; i < estimate.length; ++i) {
+    mappedLower.push(estimate[i] - lower[i]);
+    mappedUpper.push(upper[i] - estimate[i]);
+  }
+
+  return [mappedLower, mappedUpper]
+}
+
+$.get("json/rt.json", function(data) {
+  const dates = data['cases']['dates']
+  const estimate = data['cases']['estimate']
+  const [lower, upper] = mapBounds(estimate, data['cases']['lower'], data['cases']['upper']);
+
+  var trace = {
+    x: dates,
+    y: estimate,
+    error_y: {
+      type: 'data',
+      symmetric: false,
+      array: upper,
+      arrayminus: lower,
+    },
+    type: 'scatter',
+    name: 'Rt estimated on cases',
   };
 
   var data = [trace];
@@ -40,11 +111,11 @@ $.get("json/municipalities.json", function(data) {
   var selectorOptions = {
     buttons: [
       {
-        step: 'week',
-        count: 1,
-        label: '1w',
-        stepmode: 'backward',
-      }, {
+        // step: 'week',
+        // count: 1,
+        // label: '1w',
+        // stepmode: 'backward',
+      // }, {
         step: 'month',
         count: 1,
         label: '1m',
@@ -69,6 +140,6 @@ $.get("json/municipalities.json", function(data) {
     },
   };
 
-  $('#spinner').hide();
-  Plotly.newPlot('time-series', data, layout, {staticPlot: false});
+  $('#rt-plot .spinner').hide();
+  Plotly.newPlot('rt-plot', data, layout, {staticPlot: false});
 });

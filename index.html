@@ -26,24 +26,34 @@
         </p>
       </div>
       <ul uk-tab>
-        <li class="uk-active"><a href="#">Tidsserie</a></li>
+        <li><a href="#">Scatter Plot</a></li>
+        <li class="uk-active"><a href="#">Kontakttal</a></li>
         <!-- <li><a href="#">Kort</a></li> -->
       </ul>
-      <form>
-        <select class="uk-select">
-            <option>Registrede Smittetilfælde</option>
-            <option>Positive Tests (Procent)</option>
-        </select>
-      </form>
-
-      <div id="time-series">
-        <div id="spinner" style="text-align: center;">
-          <div uk-spinner="ratio: 2"></div>
+      <div id="rt-plot-container">
+        <div id="rt-plot">
+          <div class="spinner" style="text-align: center;">
+            <div uk-spinner="ratio: 2"></div>
+          </div>
         </div>
       </div>
+      <div id="scatter-plot-container" style="display: none">
+        <form>
+          <select class="uk-select">
+              <option>Registrede Smittetilfælde</option>
+              <option>Positive Tests (Procent)</option>
+          </select>
+        </form>
 
-      <hr/>
-      <p class="uk-text-small">Kilde: <a href="https://www.ssi.dk/sygdomme-beredskab-og-forskning/sygdomsovervaagning/c/covid19-overvaagning/arkiv-med-overvaagningsdata-for-covid19">Statens Serum Institut</a> (Opdateret 22. august, 2020)</p>
+        <div id="scatter-plot">
+          <div class="spinner" style="text-align: center;">
+            <div uk-spinner="ratio: 2"></div>
+          </div>
+        </div>
+
+        <hr/>
+        <p class="uk-text-small">Kilde: <a href="https://www.ssi.dk/sygdomme-beredskab-og-forskning/sygdomsovervaagning/c/covid19-overvaagning/arkiv-med-overvaagningsdata-for-covid19">Statens Serum Institut</a>. Opdateret 21. august, 2020. Da det tager tid at analysere prøver, er de seneste to dage ikke med.</p>
+      </div>
     </div>
 
 

@@ -3,8 +3,6 @@ import json
 import os
 
 def map_int(s):
-    if s == "<10":
-        return 10
     return int(s.replace('.', ''))
 
 folder_names = sorted(os.listdir('data/ssi'))
@@ -23,7 +21,7 @@ with open("data/ssi/{}/Municipality_cases_time_series.csv".format(date), 'r') as
     for municipality in header_row:
         data['municipalities'][municipality] = {}
         data['municipalities'][municipality]['cases'] = []
-        data['municipalities'][municipality]['tested_persons'] = []
+        data['municipalities'][municipality]['testedPersons'] = []
 
     for row in reader:
         date = row[0]
@@ -46,7 +44,7 @@ with open("data/ssi/{}/Municipality_tested_persons_time_series.csv".format(date)
             if not municipality in data['municipalities']:
                 continue
 
-            data['municipalities'][municipality]['tested_persons'].append(tested_persons)
+            data['municipalities'][municipality]['testedPersons'].append(tested_persons)
 
 # Write json file
 with open("json/municipalities.json", 'w') as json_file:
