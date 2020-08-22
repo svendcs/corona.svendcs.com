@@ -72,7 +72,7 @@ $.get("json/municipalities.json", function(data) {
   };
 
   $('#scatter-plot-container .spinner').hide();
-  Plotly.newPlot('scatter-plot', data, layout, {staticPlot: false});
+  Plotly.newPlot('scatter-plot', data, layout, {displayModeBar: false});
 });
 
 function mapBounds(estimate, lower, upper) {
@@ -140,5 +140,5 @@ $.get("json/rt.json", function(data) {
   };
 
   $('#rt-plot .spinner').hide();
-  Plotly.newPlot('rt-plot', data, layout, {staticPlot: false});
+  Plotly.newPlot('rt-plot', data, layout, {displayModeBar: false});
 });

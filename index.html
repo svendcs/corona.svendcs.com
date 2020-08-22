@@ -19,11 +19,6 @@
     <div class="uk-container">
       <div class="uk-margin-top">
         <h1>Corona Dashboard</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet
-          odio arcu. Aenean sagittis fringilla nisl eu hendrerit. Fusce fringilla
-          molestie tincidunt.
-        </p>
       </div>
       <ul uk-tab>
         <li class="uk-active"><a href="#">Scatter Plot</a></li>
@@ -32,20 +27,34 @@
       </ul>
       <ul class="uk-switcher uk-margin">
         <li id="scatter-plot-container">
-          <form>
-            <select class="uk-select">
-                <option>Registrede Smittetilfælde</option>
-                <option>Positive Tests (Procent)</option>
-            </select>
-            <select class="uk-select">
-                <option>Aarhus</option>
-                <option>Danmark</option>
-            </select>
-          </form>
-
-          <div id="scatter-plot">
-            <div class="spinner" style="text-align: center;">
-              <div uk-spinner="ratio: 2"></div>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet
+            odio arcu. Aenean sagittis fringilla nisl eu hendrerit. Fusce fringilla
+            molestie tincidunt.
+          </p>
+          <div uk-grid>
+            <div class="uk-width-1-4">
+              <form>
+                <div class="uk-margin">
+                  <select class="uk-select">
+                      <option>Registrede Smittetilfælde</option>
+                      <option>Positive Tests (Procent)</option>
+                  </select>
+                </div>
+                <div class="uk-margin">
+                  <select class="uk-select">
+                      <option>Aarhus</option>
+                      <option>Danmark</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+            <div class="uk-width-3-4">
+              <div id="scatter-plot">
+                <div class="spinner" style="text-align: center;">
+                  <div uk-spinner="ratio: 2"></div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -53,15 +62,34 @@
           <p class="uk-text-small">Kilde: <a href="https://www.ssi.dk/sygdomme-beredskab-og-forskning/sygdomsovervaagning/c/covid19-overvaagning/arkiv-med-overvaagningsdata-for-covid19">Statens Serum Institut</a>. Opdateret 21. august, 2020. Da det tager tid at analysere prøver, er de seneste to dage ikke med.</p>
         </li>
         <li id="rt-plot-container">
-          <form>
-            <select class="uk-select">
-                <option>Registrede Smittetilfælde</option>
-                <option>Positive Tests (Procent)</option>
-            </select>
-          </form>
-          <div id="rt-plot">
-            <div class="spinner" style="text-align: center;">
-              <div uk-spinner="ratio: 2"></div>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet
+            odio arcu. Aenean sagittis fringilla nisl eu hendrerit. Fusce fringilla
+            molestie tincidunt.
+          </p>
+          <div uk-grid>
+            <div class="uk-width-1-4">
+              <form>
+                <div class="uk-margin">
+                  <select class="uk-select">
+                      <option>Registrede Smittetilfælde</option>
+                      <option>Positive Tests (Procent)</option>
+                  </select>
+                </div>
+                <div class="uk-margin">
+                  <select class="uk-select">
+                      <option>Aarhus</option>
+                      <option>Danmark</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+            <div class="uk-width-3-4">
+              <div id="rt-plot">
+                <div class="spinner" style="text-align: center;">
+                  <div uk-spinner="ratio: 2"></div>
+                </div>
+              </div>
             </div>
           </div>
 
