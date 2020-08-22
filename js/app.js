@@ -1,10 +1,9 @@
-$.get("json/time_series.json", function(data) {
-  cases = data['cases']
-  tested_persons = data['testedPersons']
-  deaths = data['deaths']
-  dates = data['dates']
+$.get("json/municipalities.json", function(data) {
+  const cases = data['municipalities']['Aarhus']['cases'];
+  const tested_persons = data['municipalities']['Aarhus']['testedPersons'];
+  const dates = data['dates'];
 
-  percent_positive = []
+  percent_positive = [];
   for (var i = 0; i < cases.length; ++i) {
     if (tested_persons[i] == 0) {
       percent_positive.push(0);
@@ -16,7 +15,7 @@ $.get("json/time_series.json", function(data) {
 
   var trace1 = {
     x: dates.slice(0, dates.length - 2),
-    y: tested_persons.slice(0, dates.length - 2),
+    y: cases.slice(0, dates.length - 2),
     type: 'scatter',
     mode: 'lines+markers',
     name: 'Tested Persons',
@@ -31,7 +30,7 @@ $.get("json/time_series.json", function(data) {
     yaxis: 'y2',
   };
 
-  var data = [trace1, trace2];
+  var data = [trace1];
 
   var selectorOptions = {
     buttons: [
@@ -72,7 +71,7 @@ $.get("json/time_series.json", function(data) {
     },
   };
 
-  $('#scatter-plot .spinner').hide();
+  $('#scatter-plot-container .spinner').hide();
   Plotly.newPlot('scatter-plot', data, layout, {staticPlot: false});
 });
 
