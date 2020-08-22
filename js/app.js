@@ -12,8 +12,6 @@ function mapMunicipalityData(dates, cumConfirmed, cumTested) {
     const newTested = (cumTested[i] - cumTested[i-1])/dayDiff;
     const newConfirmedPercent = 100 * (newConfirmed/newTested);
 
-    console.log(dates[i], newConfirmed);
-
     mappedDates.push(dates[i]);
     mappedConfirmed.push(newConfirmed);
     mappedTested.push(newTested);
@@ -25,7 +23,7 @@ function mapMunicipalityData(dates, cumConfirmed, cumTested) {
   return [mappedDates, mappedConfirmed, mappedTested, mappedConfirmedPercent];
 }
 
-$.get("config.json", function(configData) {
+$.get("json/config.json", function(configData) {
   $.get("json/municipalities/aarhus.json", function(municipalityData) {
     const [dates, newConfirmed, newTested, newConfirmedPercent] = mapMunicipalityData(configData['dates'], municipalityData['cases'], municipalityData['tested']);
 
@@ -39,38 +37,39 @@ $.get("config.json", function(configData) {
     var data = [trace];
 
     var selectorOptions = {
-      buttons: [{
-        step: 'week',
-        stepmode: 'backward',
-        count: 1,
-        label: '1w'
-      }, {
-        step: 'month',
-        stepmode: 'backward',
-        count: 1,
-        label: '1m'
-      }, {
-        step: 'month',
-        stepmode: 'backward',
-        count: 2,
-        label: '2m'
-      }, {
-        step: 'all',
-      }],
+      buttons: [
+        {
+          step: 'week',
+          count: 1,
+          label: '1w',
+          stepmode: 'backward',
+        }, {
+          step: 'month',
+          count: 1,
+          label: '1m',
+          stepmode: 'backward',
+        }, {
+          step: 'month',
+          count: 2,
+          label: '2m',
+          stepmode: 'backward',
+        }, {
+          step: 'all',
+        }],
     };
 
     var layout = {
-      title: 'Aarhus Corona Data',
       xaxis: {
-        rangeselector: selectorOptions,
         rangeslider: {},
+        rangeselector: selectorOptions,
+        type: "date",
       },
       yaxis: {
-        fixedrange: true,
       },
     };
 
-    Plotly.newPlot('tester', data, layout, {staticPlot: false});
+    $('#spinner').hide();
+    Plotly.newPlot('time-series', data, layout, {staticPlot: false});
   });
 });
 
