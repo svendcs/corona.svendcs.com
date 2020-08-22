@@ -29,9 +29,9 @@ with open('config.json', 'r') as config_file:
             for row in reader:
                 ident = int(row[0])
 
-                municipalities[ident]['tested'].append(map_int(row[3]))
-                municipalities[ident]['cases'].append(map_int(row[4]))
-                municipalities[ident]['population'].append(map_int(row[5]))
+                municipalities[ident]['tested'].append(map_int(row[2]))
+                municipalities[ident]['cases'].append(map_int(row[3]))
+                municipalities[ident]['population'].append(map_int(row[4]))
 
     # Write json files
     for municipality_config in config['municipalities']:
