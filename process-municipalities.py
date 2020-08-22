@@ -7,38 +7,48 @@ def map_int(s):
         return 10
     return int(s.replace('.', ''))
 
-with open('config.json', 'r') as config_file:
-    config = json.loads(config_file.read())
+folder_names = sorted(os.listdir('data/ssi'))
+date = folder_names[-1]
 
-    municipalities = {}
+data = {}
+data['dates'] = []
+data['municipalities'] = {}
 
-    # Create map of municipalities
-    for municipality_config in config['municipalities']:
-        ident = municipality_config['id']
-        municipalities[ident] = {}
-        municipalities[ident]['tested'] = []
-        municipalities[ident]['cases'] = []
-        municipalities[ident]['population'] = []
+# Read cases file
+with open("data/ssi/{}/Municipality_cases_time_series.csv".format(date), 'r') as f:
+    reader = csv.reader(f, delimiter=';')
+    header_row = next(reader)[1:]
 
-    # Parse CSV files
-    for date in config['dates']:
-        with open('data/ssi/{}/Municipality_test_pos.csv'.format(date)) as csvfile:
-            reader = csv.reader(csvfile, delimiter=';')
-            next(reader)
 
-            for row in reader:
-                ident = int(row[0])
+    for municipality in header_row:
+        data['municipalities'][municipality] = {}
+        data['municipalities'][municipality]['cases'] = []
+        data['municipalities'][municipality]['tested_persons'] = []
 
-                municipalities[ident]['tested'].append(map_int(row[2]))
-                municipalities[ident]['cases'].append(map_int(row[3]))
-                municipalities[ident]['population'].append(map_int(row[4]))
+    for row in reader:
+        date = row[0]
+        data['dates'].append(date)
 
-    # Write json files
-    for municipality_config in config['municipalities']:
-        ident = municipality_config['id']
-        filename = "json/municipalities/{}.json".format(municipality_config['filename'])
-        municipality = municipalities[ident]
+        for index, cases in enumerate(row[1:]):
+            municipality = header_row[index]
 
-        with open(filename, 'w') as json_file:
-            json.dump(municipality, json_file)
+            data['municipalities'][municipality]['cases'].append(cases)
+
+# Read tested persons file
+with open("data/ssi/{}/Municipality_tested_persons_time_series.csv".format(date), 'r') as f:
+    reader = csv.reader(f, delimiter=';')
+    header_row = next(reader)[1:]
+
+    for row in reader:
+        for index, tested_persons in enumerate(row[1:]):
+            municipality = header_row[index]
+
+            if not municipality in data['municipalities']:
+                continue
+
+            data['municipalities'][municipality]['tested_persons'].append(tested_persons)
+
+# Write json file
+with open("json/municipalities.json", 'w') as json_file:
+    json.dump(data, json_file, indent=2, sort_keys=True)
 
