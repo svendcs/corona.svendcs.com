@@ -1,30 +1,74 @@
+function mapMunicipalityData(dates, cumConfirmed, cumTested) {
+  var mappedDates = [];
+  var mappedConfirmed = [];
+  var mappedTested = [];
+  var mappedConfirmedPercent = [];
+
+  var lastDate = moment(dates[0], 'YYYY-MM-DD');
+  for (var i = 1; i < dates.length; ++i) {
+    const date = moment(dates[i], 'YYYY-MM-DD');
+    const dayDiff = date.diff(lastDate, 'days')
+    const newConfirmed = (cumConfirmed[i] - cumConfirmed[i-1])/dayDiff;
+    const newTested = (cumTested[i] - cumTested[i-1])/dayDiff;
+    const newConfirmedPercent = 100 * (newConfirmed/newTested);
+
+    console.log(dates[i], newConfirmed);
+
+    mappedDates.push(dates[i]);
+    mappedConfirmed.push(newConfirmed);
+    mappedTested.push(newTested);
+    mappedConfirmedPercent.push(newConfirmedPercent);
+
+    lastDate = date;
+  }
+
+  return [mappedDates, mappedConfirmed, mappedTested, mappedConfirmedPercent];
+}
+
 $.get("config.json", function(configData) {
   $.get("json/municipalities/aarhus.json", function(municipalityData) {
-    var dates = configData['dates'];
-    var cases = municipalityData['cases'];
-    var tested = municipalityData['tested'];
-    var newDates = [];
-    var newCases = [];
-    var newTested = [];
-    var newConfirmPercent = [];
-
-    var first = true;
-    for (var i = 1; i < cases.length; ++i) {
-      newCases.push(cases[i] - cases[i-1]);
-      newTested.push(tested[i] - tested[i-1]);
-      newDates.push(dates[i]);
-      newConfirmPercent.push(100*(cases[i] - cases[i-1])/(tested[i] - tested[i-1]));
-    }
+    const [dates, newConfirmed, newTested, newConfirmedPercent] = mapMunicipalityData(configData['dates'], municipalityData['cases'], municipalityData['tested']);
 
     var trace = {
-      x: newDates,
-      y: newCases,
+      x: dates,
+      y: newConfirmed,
       type: 'scatter',
       mode: 'lines+markers',
     };
 
     var data = [trace];
-    var layout = {};
+
+    var selectorOptions = {
+      buttons: [{
+        step: 'week',
+        stepmode: 'backward',
+        count: 1,
+        label: '1w'
+      }, {
+        step: 'month',
+        stepmode: 'backward',
+        count: 1,
+        label: '1m'
+      }, {
+        step: 'month',
+        stepmode: 'backward',
+        count: 2,
+        label: '2m'
+      }, {
+        step: 'all',
+      }],
+    };
+
+    var layout = {
+      title: 'Aarhus Corona Data',
+      xaxis: {
+        rangeselector: selectorOptions,
+        rangeslider: {},
+      },
+      yaxis: {
+        fixedrange: true,
+      },
+    };
 
     Plotly.newPlot('tester', data, layout, {staticPlot: false});
   });
