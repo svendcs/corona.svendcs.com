@@ -27,10 +27,10 @@ $.get("json/municipalities.json", function(data) {
     type: 'scatter',
     mode: 'lines+markers',
     name: 'Positive Tests (%)',
-    yaxis: 'y2',
+    yaxis: 'y',
   };
 
-  var data = [trace1];
+  var data = [trace2];
 
   var selectorOptions = {
     buttons: [
@@ -56,23 +56,19 @@ $.get("json/municipalities.json", function(data) {
 
   var layout = {
     xaxis: {
-      rangeslider: {range: ['2020-07-19', '2020-08-19']},
+      rangeslider: {},
       rangeselector: selectorOptions,
       type: "date",
     },
     yaxis: {
-      title: "count",
-    },
-    yaxis2: {
       title: "percent",
-      overlaying: 'y',
-      side: 'right',
-      range: [0, 1],
+      range: [0, 15],
     },
+    title: "Scatter Plot",
   };
 
   $('#scatter-plot-container .spinner').hide();
-  Plotly.newPlot('scatter-plot', data, layout, {displayModeBar: false});
+  Plotly.newPlot('scatter-plot', data, layout, {displayModeBar: false, responsive: true});
 });
 
 function mapBounds(estimate, lower, upper) {
@@ -137,8 +133,9 @@ $.get("json/rt.json", function(data) {
     },
     yaxis: {
     },
+    title: "Kontakttal",
   };
 
   $('#rt-plot .spinner').hide();
-  Plotly.newPlot('rt-plot', data, layout, {displayModeBar: false});
+  Plotly.newPlot('rt-plot', data, layout, {displayModeBar: false, responsive: true});
 });
