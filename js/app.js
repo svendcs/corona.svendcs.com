@@ -43,6 +43,7 @@ function map_bounds(estimate, lower, upper) {
   return [mapped_lower, mapped_upper]
 }
 
+// Functions for displaying plots
 function update_time_series_plot() {
   if (time_series_national_data == null)
     return;
@@ -214,61 +215,4 @@ $(function() {
     update_rt_plot();
   });
 });
-
-// $.get("json/rt.json", function(data) {
-//   const dates = data['cases']['dates']
-//   const estimate = data['cases']['estimate']
-//   const [lower, upper] = mapBounds(estimate, data['cases']['lower'], data['cases']['upper']);
-
-//   var trace = {
-//     x: dates,
-//     y: estimate,
-//     error_y: {
-//       type: 'data',
-//       symmetric: false,
-//       array: upper,
-//       arrayminus: lower,
-//     },
-//     type: 'scatter',
-//     name: 'Rt estimated on cases',
-//   };
-
-//   var data = [trace];
-
-//   var selectorOptions = {
-//     buttons: [
-//       {
-//         // step: 'week',
-//         // count: 1,
-//         // label: '1w',
-//         // stepmode: 'backward',
-//       // }, {
-//         step: 'month',
-//         count: 1,
-//         label: '1m',
-//         stepmode: 'backward',
-//       }, {
-//         step: 'month',
-//         count: 2,
-//         label: '2m',
-//         stepmode: 'backward',
-//       }, {
-//         step: 'all',
-//       }],
-//   };
-
-//   var layout = {
-//     xaxis: {
-//       rangeslider: {},
-//       rangeselector: selectorOptions,
-//       type: "date",
-//     },
-//     yaxis: {
-//     },
-//     title: "Kontakttal",
-//   };
-
-//   $('#rt-plot .spinner').hide();
-//   Plotly.newPlot('rt-plot', data, layout, {displayModeBar: false, responsive: true});
-// });
 
