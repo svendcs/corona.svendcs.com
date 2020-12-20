@@ -4,17 +4,26 @@ type: docker
 name: linux
 
 steps:
+- name: build
+  image: jojomi/hugo
+  commands:
+  - hugo
 - name: deploy
   image: eeacms/rsync
   environment:
     SSH_KEY:
       from_secret: key
   commands:
-  - mkdir -p ~/.ssh
-  - eval `ssh-agent -s`
-  - echo "$SSH_KEY" | ssh-add -
-  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-  - rsync --delete -ra -e "ssh -p 8000" index.html json css js ci@stracci.svendcs.com:/var/www/corona.svendcs.com/html
+  - ./download_ssi.sh
+  - python3 process-municipalities.py
+  - python3 process-rt.py
+  - python3 process-time-series.py
+  - echo "Hej"
+  # - mkdir -p ~/.ssh
+  # - eval `ssh-agent -s`
+  # - echo "$SSH_KEY" | ssh-add -
+  # - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  # - rsync --delete -ra -e "ssh -p 8000" public/ ci@barzini.svendcs.com:/var/www/judo.svendcs.com/html
   when:
     branch:
     - master
