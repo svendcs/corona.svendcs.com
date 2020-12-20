@@ -12,6 +12,5 @@ Download and extract zip
 mkdir -p data/ssi
 archive_path="/tmp/covid-archive.zip"
 curl $zip_url --output $archive_path
-unzip -d "data/ssi/$year-$month-$date" $archive_path
-
+unzip -u -d "data/ssi/$year-$month-$date" $archive_path
 
