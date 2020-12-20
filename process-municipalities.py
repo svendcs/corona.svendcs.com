@@ -24,8 +24,7 @@ with open("data/ssi/{}/Municipality_cases_time_series.csv".format(date), 'r') as
         data['municipalities'][municipality]['testedPersons'] = []
 
     for row in reader:
-        date = row[0]
-        data['dates'].append(date)
+        data['dates'].append(row[0])
 
         for index, cases in enumerate(row[1:]):
             municipality = header_row[index]
