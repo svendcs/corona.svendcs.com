@@ -1,5 +1,6 @@
 var time_series_national_data = null;
 var time_series_municipality_data = null;
+var time_series_hospitalized_data = null;
 var rt_national_data = null;
 
 // Load all data
@@ -10,6 +11,11 @@ $.get("json/municipalities.json", function(data) {
 
 $.get("json/time_series.json", function(data) {
   time_series_national_data = data;
+  update_time_series_plot();
+});
+
+$.get("json/hospitalized.json", function(data) {
+  time_series_hospitalized_data = data;
   update_time_series_plot();
 });
 
@@ -49,6 +55,8 @@ function update_time_series_plot() {
     return;
   if (time_series_municipality_data == null)
     return;
+  if (time_series_hospitalized_data == null)
+    return;
 
   $(function() {
     $('#time-series-plot-container .spinner').hide();
@@ -56,7 +64,7 @@ function update_time_series_plot() {
     const plot_type = $('#time-series-plot-container .plot-select option:selected').attr('class');
     const region = $('#time-series-plot-container .region-select option:selected').text()
 
-    if (plot_type == 'option-deaths' && region != "Danmark") {
+    if (region != "Danmark" && plot_type != 'option-cases' && plot_type != 'option-tests-positive' && plot_type != 'option-tests-total') {
       $('.data-unavailable-warning').show();
       $('#time-series-plot').hide();
       return;
@@ -67,29 +75,42 @@ function update_time_series_plot() {
 
     var x = null;
     var y = null;
-    var region_data = null;
 
-    if (region == 'Danmark') {
-      x = time_series_national_data['dates'];
-      region_data = time_series_national_data;
-    }
-    else {
-      x = time_series_municipality_data['dates'];
-      region_data = time_series_municipality_data['municipalities'][region];
-    }
+    if (plot_type == 'option-cases' || plot_type == 'option-tests-total' || plot_type == 'option-deaths' || plot_type == 'option-tests-posive') {
+      var region_data = null;
+      if (region == 'Danmark') {
+        x = time_series_national_data['dates'];
+        region_data = time_series_national_data;
+      }
+      else {
+        x = time_series_municipality_data['dates'];
+        region_data = time_series_municipality_data['municipalities'][region];
+      }
 
-    if (plot_type == 'option-cases') {
-      y = region_data['cases'];
+      if (plot_type == 'option-cases') {
+        y = region_data['cases'];
+      }
+      else if (plot_type == 'option-tests-total') {
+        y = region_data['testedPersons'];
+      }
+      else if (plot_type == 'option-deaths') {
+        y = region_data['deaths']
+      }
+      else {
+        x = x.slice(100);
+        y = compute_tests_positive_percent(region_data['cases'], region_data['testedPersons']).slice(100);
+      }
     }
-    else if (plot_type == 'option-tests-total') {
-      y = region_data['testedPersons'];
-    }
-    else if (plot_type == 'option-deaths') {
-      y = region_data['deaths']
-    }
-    else {
-      x = x.slice(100);
-      y = compute_tests_positive_percent(region_data['cases'], region_data['testedPersons']).slice(100);
+    else { // hospitalized data
+      console.log("Indlagte")
+      x = time_series_hospitalized_data['dates']
+
+      if (plot_type == 'option-hospitalized')
+        y = time_series_hospitalized_data['hospitalized']
+      else if (plot_type == 'option-intensive-care')
+        y = time_series_hospitalized_data['intensive_care']
+      else
+        y = time_series_hospitalized_data['hospitalized']
     }
 
     var trace1 = {
