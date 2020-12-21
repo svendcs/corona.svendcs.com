@@ -40,8 +40,6 @@ function update_time_series_plot() {
   if (time_series_hospitalization_data == null)
     return;
 
-  $('#time-series-plot-container .spinner').hide();
-
   const plot_select_element  = $('#time-series-plot-container .plot-select option:selected');
   const plot_type = plot_select_element.attr('class');
 
@@ -50,14 +48,23 @@ function update_time_series_plot() {
 
   var x = null;
   var y = null;
+  var source = null;
+  var source_url = null;
+  var last_updated = null;
   var title = plot_select_element.text();
 
   if (plot_type == 'option-deaths') {
     x = time_series_national_data['dates'];
+    source = time_series_national_data['source'];
+    source_url = time_series_national_data['source_url'];
+    last_updated = time_series_national_data['last_updated'];
     y = time_series_national_data['deaths'];
   }
   else if (plot_type == 'option-hospitalized' || plot_type == 'option-intensive-care' || plot_type == 'option-respirator') {
     x = time_series_hospitalization_data['dates'];
+    source = time_series_hospitalization_data['source'];
+    source_url = time_series_hospitalization_data['source_url'];
+    last_updated = time_series_hospitalization_data['last_updated'];
 
     if (plot_type == 'option-hospitalized')
       y = time_series_hospitalization_data['hospitalized'];
@@ -72,10 +79,16 @@ function update_time_series_plot() {
     var region_data = null;
     if (region == 'Danmark') {
       x = time_series_national_data['dates'];
+      source = time_series_national_data['source'];
+      source_url = time_series_national_data['source_url'];
+      last_updated = time_series_national_data['last_updated'];
       region_data = time_series_national_data;
     }
     else {
       x = time_series_municipality_data['dates'];
+      source = time_series_municipality_data['source'];
+      source_url = time_series_municipality_data['source_url'];
+      last_updated = time_series_municipality_data['last_updated'];
       region_data = time_series_municipality_data['municipalities'][region];
     }
 
@@ -137,7 +150,13 @@ function update_time_series_plot() {
     title: "Tidsserie",
   };
 
+  $('#time-series-plot-container .spinner').hide();
   Plotly.newPlot('time-series-plot', data, layout, {displayModeBar: false, responsive: true});
+
+  moment.locale('da')
+  $("#time-series-plot-container .source-link").text(source).attr("href", source_url);
+  const last_updated_text = moment(last_updated, "DD-MM-YYYY HH:mm:ss").format('D. MMM, HH:mm');
+  $("#time-series-plot-container .source-updated-text").text(last_updated_text);
 }
 
 var region_select_mode = 'ALL'

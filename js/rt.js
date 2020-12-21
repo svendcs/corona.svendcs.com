@@ -25,6 +25,11 @@ function update_rt_plot() {
 
   $('#rt-plot-container .spinner').hide();
 
+  var source = rt_national_data['source'];
+  var source_url = rt_national_data['source_url'];
+  var last_updated = rt_national_data['last_updated'];
+  var title = "Kontakttal";
+
   const dates = rt_national_data['dates'];
   const estimate = rt_national_data['estimate'];
   const [lower, upper] = map_bounds(estimate, rt_national_data['lower'], rt_national_data['upper']);
@@ -79,5 +84,9 @@ function update_rt_plot() {
 
   $('#rt-plot .spinner').hide();
   Plotly.newPlot('rt-plot', data, layout, {displayModeBar: false, responsive: true});
+  moment.locale('da')
+  $("#rt-plot-container .source-link").text(source).attr("href", source_url);
+  const last_updated_text = moment(last_updated, "DD-MM-YYYY HH:mm:ss").format('D. MMM, HH:mm');
+  $("#rt-plot-container .source-updated-text").text(last_updated_text);
 }
 
