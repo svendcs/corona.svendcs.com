@@ -7,20 +7,20 @@ steps:
 - name: ssi-data
   image: python:latest
   commands:
-  - bash download_ssi.sh
+  - bash scripts/download_ssi.sh
   - mkdir -p json
-  - python3 process-municipalities-series.py
-  - python3 process-national-series.py
-  - python3 process-rt.py
+  - python3 scripts/process-municipalities-series.py
+  - python3 scripts/process-national-series.py
+  - python3 scripts/process-rt.py
   when:
     branch:
     - master
 - name: dst-data
   image: python:latest
   commands:
-  - bash download_dst.sh
+  - bash scripts/download_dst.sh
   - mkdir -p json
-  - python3 process-hospitalization-series.py
+  - python3 scripts/process-hospitalization-series.py
   when:
     branch:
     - master
