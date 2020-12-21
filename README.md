@@ -4,14 +4,16 @@ Svend's Corona Dashboard (Work-in-Progress)
 
 Svend's Corona Dashboard shows the latest Covid-19 numbers in Denmark. All data
 is automatically pulled from the official sources at [ssi.dk](https://ssi.dk).
-This repository contains the source code and infrastructure-as-code for the dashboard.
 
-The dashboard is still very much a word-in-progress.
+The dashboard is still very much a word-in-progress and the code is a mess.
+This repository contains the source code and continuous integration scripts for
+the dashboard.
 
 Development Setup
 -----------------
 The dashboard itself is a static webpage that fetches json files. In order to
-run locally, you should run it on a small http server like so:
+run locally, you should first run the various scripts to fetch data. Afterwards
+you should run a http server like so:
 ```
 yarn install
 yarn dev
