@@ -155,7 +155,7 @@ function update_time_series_plot() {
 
   moment.locale('da')
   $("#time-series-plot-container .source-link").text(source).attr("href", source_url);
-  const last_updated_text = moment(last_updated, "DD-MM-YYYY HH:mm:ss").format('D. MMM, HH:mm');
+  const last_updated_text = moment(last_updated, "YYYY-MM-DD HH:mm:ss").format('D. MMM, HH:mm');
   $("#time-series-plot-container .source-updated-text").text(last_updated_text);
 }
 

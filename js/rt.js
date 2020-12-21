@@ -86,7 +86,7 @@ function update_rt_plot() {
   Plotly.newPlot('rt-plot', data, layout, {displayModeBar: false, responsive: true});
   moment.locale('da')
   $("#rt-plot-container .source-link").text(source).attr("href", source_url);
-  const last_updated_text = moment(last_updated, "DD-MM-YYYY HH:mm:ss").format('D. MMM, HH:mm');
+  const last_updated_text = moment(last_updated, "YYYY-MM-DD HH:mm:ss").format('D. MMM, HH:mm');
   $("#rt-plot-container .source-updated-text").text(last_updated_text);
 }
 

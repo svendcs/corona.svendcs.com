@@ -13,6 +13,7 @@ data['dates'] = []
 data['cases'] = []
 data['testedPersons'] = []
 data['deaths'] = []
+data['population'] = 5837213
 
 # Read test positive over time
 with open("data/ssi/{}/Test_pos_over_time.csv".format(date), 'r') as f:
@@ -40,7 +41,7 @@ with open("data/ssi/{}/Deaths_over_time.csv".format(date), 'r') as f:
     for row in rows[:-1]:
         data['deaths'].append(map_int(row[1]))
 
-data['last_updated'] = "{} 14:00:00".format(data['dates'][-1])
+data['last_updated'] = "{} 14:00:00".format(date)
 data['source'] = 'Statens Serum Institut'
 data['source_url'] = 'https://covid19.ssi.dk/overvagningsdata/download-fil-med-overvaagningdata'
 

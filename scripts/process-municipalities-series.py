@@ -69,7 +69,7 @@ with open("data/ssi/{}/Municipality_test_pos.csv".format(date), 'r') as f:
         data['municipalities'][municipality]['population'] = map_int(row[4])
 
 # Write source information
-data['last_updated'] = "{} 14:00:00".format(data['dates'][-1])
+data['last_updated'] = "{} 14:00:00".format(date)
 data['source'] = 'Statens Serum Institut'
 data['source_url'] = 'https://covid19.ssi.dk/overvagningsdata/download-fil-med-overvaagningdata'
 
