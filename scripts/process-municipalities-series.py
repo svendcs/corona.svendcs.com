@@ -49,6 +49,10 @@ with open("data/ssi/{}/Municipality_tested_persons_time_series.csv".format(date)
 
             data['municipalities'][municipality]['testedPersons'].append(map_int(tested_persons))
 
+data['last_updated'] = "{} 14:00:00".format(data['dates'][-1])
+data['source'] = 'Statens Serum Institut'
+data['source_url'] = 'https://covid19.ssi.dk/overvagningsdata/download-fil-med-overvaagningdata'
+
 # Write json file
 with open("json/municipalities_time_series.json", 'w') as json_file:
     json.dump(data, json_file, indent=2, sort_keys=True)

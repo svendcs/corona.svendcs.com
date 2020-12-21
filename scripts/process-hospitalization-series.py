@@ -39,6 +39,10 @@ for date in sorted(dates):
     data['intensive_care'].append(intensive_care[date])
     data['respirator'].append(respirator[date])
 
+data['last_updated'] = root.find('./MetaData/LastUpdated').text
+data['source'] = 'Danmarks Statistik'
+data['source_url'] = 'https://www.statistikbanken.dk/SMIT1'
+
 # Write json file
 with open("json/hospitalization_time_series.json", 'w') as json_file:
     json.dump(data, json_file, indent=2, sort_keys=True)

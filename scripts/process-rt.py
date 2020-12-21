@@ -27,6 +27,10 @@ with open(path, 'r') as f:
         data['lower'].append(parse_float(row[2]))
         data['upper'].append(parse_float(row[3]))
 
+data['last_updated'] = "{} 14:00:00".format(data['dates'][-1])
+data['source'] = 'Statens Serum Institut'
+data['source_url'] = 'https://covid19.ssi.dk/overvagningsdata/download-fil-med-overvaagningdata'
+
 # Write json file
 with open("json/rt.json", 'w') as json_file:
     json.dump(data, json_file, indent=2, sort_keys=True)
