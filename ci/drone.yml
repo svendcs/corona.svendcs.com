@@ -9,9 +9,9 @@ steps:
   commands:
   - bash download_ssi.sh
   - mkdir -p json
-  - python3 process-municipalities.py
+  - python3 process-municipalities-series.py
+  - python3 process-national-series.py
   - python3 process-rt.py
-  - python3 process-time-series.py
   when:
     branch:
     - master
@@ -20,7 +20,7 @@ steps:
   commands:
   - bash download_dst.sh
   - mkdir -p json
-  - python3 process-dst.py
+  - python3 process-hospitalization-series.py
   when:
     branch:
     - master

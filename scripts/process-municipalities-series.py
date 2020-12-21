@@ -33,7 +33,7 @@ with open("data/ssi/{}/Municipality_cases_time_series.csv".format(date), 'r') as
         for index, cases in enumerate(row[1:]):
             municipality = map_municipality(header_row[index])
 
-            data['municipalities'][municipality]['cases'].append(cases)
+            data['municipalities'][municipality]['cases'].append(map_int(cases))
 
 # Read tested persons file
 with open("data/ssi/{}/Municipality_tested_persons_time_series.csv".format(date), 'r') as f:
@@ -47,9 +47,9 @@ with open("data/ssi/{}/Municipality_tested_persons_time_series.csv".format(date)
             if not municipality in data['municipalities']:
                 continue
 
-            data['municipalities'][municipality]['testedPersons'].append(tested_persons)
+            data['municipalities'][municipality]['testedPersons'].append(map_int(tested_persons))
 
 # Write json file
-with open("json/municipalities.json", 'w') as json_file:
+with open("json/municipalities_time_series.json", 'w') as json_file:
     json.dump(data, json_file, indent=2, sort_keys=True)
 

@@ -41,6 +41,6 @@ with open("data/ssi/{}/Deaths_over_time.csv".format(date), 'r') as f:
         data['deaths'].append(map_int(row[1]))
 
 # Write json file
-with open("json/time_series.json", 'w') as json_file:
+with open("json/national_time_series.json", 'w') as json_file:
     json.dump(data, json_file, indent=2, sort_keys=True)
 

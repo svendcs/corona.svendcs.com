@@ -40,6 +40,6 @@ for date in sorted(dates):
     data['respirator'].append(respirator[date])
 
 # Write json file
-with open("json/hospitalized.json", 'w') as json_file:
+with open("json/hospitalization_time_series.json", 'w') as json_file:
     json.dump(data, json_file, indent=2, sort_keys=True)
 
